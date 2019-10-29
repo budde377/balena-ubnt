@@ -1,7 +1,6 @@
 version: '2'
 volumes:
         unifi-data:
-        unms-data:
         nginx-data:
         letsencrypt:
 services:
