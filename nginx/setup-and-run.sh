@@ -99,7 +99,7 @@ for service in "${SERVICES[@]}"; do
 done
 
 cp $NGINX_BASE_SPEC "/etc/nginx/conf.d/$DOMAIN.conf"
-sed -i "s/{{DOMAIN}}/$DOMAIN/g;" "/etc/nginx/conf.d/$SUBDOMAIN.$DOMAIN.conf"
+sed -i "s/{{DOMAIN}}/$DOMAIN/g;" "/etc/nginx/conf.d/$DOMAIN.conf"
 if [ -n "$LETSENCRYPT" ]; then
 	sed -i "s#{{SSL_CERTIFICATE}}#$LETSENCRYPT_PATH#g; \
 		s#{{SSL_CERTIFICATE_KEY}}#$LETSENCRYPT_PATH#g" \
@@ -109,6 +109,5 @@ else
 		s#{{SSL_CERTIFICATE_KEY}}#$SELFCERT_PATH#g" \
 			"/etc/nginx/conf.d/$DOMAIN.conf"
 fi
-sleep 600
 loginfo "Running nginx ..."
 timeout 604800 nginx -g 'daemon off;'
