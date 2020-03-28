@@ -109,6 +109,6 @@ else
 		s#{{SSL_CERTIFICATE_KEY}}#$SELFCERT_PATH#g" \
 			"/etc/nginx/conf.d/$DOMAIN.conf"
 fi
-
+sleep 600
 loginfo "Running nginx ..."
 timeout 604800 nginx -g 'daemon off;'
