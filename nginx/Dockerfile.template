@@ -101,6 +101,7 @@ RUN set -x \
 	&& apt-get install -y openssl vim certbot python3-certbot-dns-cloudflare
 
 COPY conf/nginx-spec.conf /app/nginx-spec.conf
+COPY conf/nginx-base-spec.conf /app/nginx-base-spec.conf
 COPY setup-and-run.sh /app/setup-and-run.sh
-
+COPY static	/app/static
 CMD ["bash", "/app/setup-and-run.sh"]

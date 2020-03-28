@@ -8,6 +8,7 @@ SELFCERT_COUNTRY=${CERT_COUNTRY:-UK}
 LETSENCRYPT_PATH=/etc/letsencrypt/live
 CLOUDFLARE_CREDS=/etc/cloudflare/creds.ini
 NGINX_SPEC=/app/nginx-spec.conf
+NGINX_BASE_SPEC=/app/nginx-base-spec.conf
 SERVICES=(unifi:8443)
 CERTBOT="certbot"
 
@@ -94,6 +95,18 @@ for service in "${SERVICES[@]}"; do
 	     		"/etc/nginx/conf.d/$SUBDOMAIN.$DOMAIN.conf"
 	fi
 done
+
+cp $NGINX_BASE_SPEC "/etc/nginx/conf.d/$DOMAIN.conf"
+sed -i "s/{{DOMAIN}}/$DOMAIN/g;" "/etc/nginx/conf.d/$SUBDOMAIN.$DOMAIN.conf"
+if [ -n "$LETSENCRYPT" ]; then
+	sed -i "s#{{SSL_CERTIFICATE}}#$LETSENCRYPT_PATH#g; \
+		s#{{SSL_CERTIFICATE_KEY}}#$LETSENCRYPT_PATH#g" \
+			"/etc/nginx/conf.d/$DOMAIN.conf"
+else
+	sed -i "s#{{SSL_CERTIFICATE}}#$SELFCERT_PATH#g; \
+		s#{{SSL_CERTIFICATE_KEY}}#$SELFCERT_PATH#g" \
+			"/etc/nginx/conf.d/$DOMAIN.conf"
+fi
 
 loginfo "Running nginx ..."
 timeout 604800 nginx -g 'daemon off;'
