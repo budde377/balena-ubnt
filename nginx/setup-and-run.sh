@@ -96,4 +96,4 @@ for service in "${SERVICES[@]}"; do
 done
 
 loginfo "Running nginx ..."
-timeout 120 nginx -g 'daemon off;'
+timeout 604800 nginx -g 'daemon off;'
