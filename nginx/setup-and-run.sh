@@ -25,6 +25,7 @@ function letsencrypt_generate {
 		$CERTBOT certonly -n --register-unsafely-without-email --agree-tos \
 			 --dns-cloudflare --dns-cloudflare-credentials "$CLOUDFLARE_CREDS" \
 			 -d "$_domain"
+		$CERTBOT renew
 	fi
 }
 
@@ -95,4 +96,4 @@ for service in "${SERVICES[@]}"; do
 done
 
 loginfo "Running nginx ..."
-exec nginx -g 'daemon off;'
+timeout 120 exec nginx -g 'daemon off;'
