@@ -60,12 +60,14 @@ EOF
 		SUBDOMAIN=${service%%:*}
 		letsencrypt_generate "$SUBDOMAIN.$DOMAIN"
 	done
+	letsencrypt_generate "$DOMAIN"
 else
 	loginfo "Setting up self-signed certificates."
 	for service in "${SERVICES[@]}"; do
 		SUBDOMAIN=${service%%:*}
 		selfsigned_generate "$SUBDOMAIN.$DOMAIN"
 	done
+	selfsigned_generate "$DOMAIN"
 fi
 
 if [ -f "$DHPARAM_PATH/dhparam.pem" ]; then
