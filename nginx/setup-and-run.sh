@@ -26,8 +26,8 @@ function letsencrypt_generate {
 		$CERTBOT certonly -n --register-unsafely-without-email --agree-tos \
 			 --dns-cloudflare --dns-cloudflare-credentials "$CLOUDFLARE_CREDS" \
 			 -d "$_domain"
-		$CERTBOT renew
 	fi
+	$CERTBOT renew
 }
 
 function selfsigned_generate {
